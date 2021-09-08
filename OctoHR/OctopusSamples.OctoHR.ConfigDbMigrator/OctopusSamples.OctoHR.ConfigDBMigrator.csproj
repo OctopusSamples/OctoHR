@@ -14,6 +14,8 @@
   <ItemGroup>
     <None Remove="scripts\0002-configuration-list-enabled-clients.sql" />
     <None Remove="scripts\0010-configuration-add-client-octopetshop.sql" />
+    <None Remove="scripts\0011-configuration-add-client-randomquotes-publishers.sql" />
+    <None Remove="scripts\0012-configuration-add-client-laptop-emporium.sql" />
   </ItemGroup>
 
   <ItemGroup>

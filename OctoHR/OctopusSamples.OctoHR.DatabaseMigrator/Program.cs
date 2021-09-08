@@ -30,13 +30,14 @@ namespace OctopusSamples.OctoHR.DatabaseMigrator
                 var clients = clientConfigDataAccess.GetEnabledClients();
                 foreach (var client in clients)
                 {
-                    Console.WriteLine("Migrating database for client: {0}", client.Name);
+                    Console.WriteLine("Working on database for client: {0}", client.Name);
                     var clientConnection = new SqlConnectionStringBuilder(configConnectionString);
                     clientConnection.InitialCatalog = client.ClientDatabase;
                     while (true)
                     {
                         try
                         {
+                            Console.WriteLine("Ensuring database exists for client: {0}", client.Name);
                             EnsureDatabase.For.SqlDatabase(clientConnection.ConnectionString);
                             break;
                         }
@@ -52,6 +53,42 @@ namespace OctopusSamples.OctoHR.DatabaseMigrator
                             {
                                 throw;
                             }
+                        }
+                    }
+
+                    // Migrate Tenant DB
+                    Console.WriteLine("Migrating database for client: {0}", client.Name);
+                    var upgrader = DeployChanges.To
+                   .SqlDatabase(clientConnection.ConnectionString)
+                   .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
+                   .LogToConsole()
+                   .Build();
+
+                    if (args.Any(a => a.StartsWith("--PreviewReportPath", StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        var report = args.FirstOrDefault(x => x.StartsWith("--PreviewReportPath", StringComparison.InvariantCultureIgnoreCase));
+                        report = report.Substring(report.IndexOf("=") + 1).Replace(@"""", string.Empty);
+
+                        var fullReportPath = Path.Combine(report, $"UpgradeReport-{client.Slug}.html");
+
+                        Console.WriteLine($"Generating the report at {fullReportPath}");
+
+                        upgrader.GenerateUpgradeHtmlReport(fullReportPath);
+                    }
+                    else
+                    {
+                        var result = upgrader.PerformUpgrade();
+
+                        if (result.Successful)
+                        {
+                            Console.ForegroundColor = ConsoleColor.Green;
+                            Console.WriteLine("Success!");
+                        }
+                        else
+                        {
+                            Console.ForegroundColor = ConsoleColor.Red;
+                            Console.WriteLine(result.Error);
+                            Console.WriteLine("Failed!");
                         }
                     }
                 }

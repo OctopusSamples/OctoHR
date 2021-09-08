@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -12,6 +12,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="scripts\0000-create-logon-table.sql" />
+    <None Remove="scripts\0002-check-user.sql" />
+    <None Remove="scripts\0003-list-employees.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="dbup-core" Version="4.5.0" />
     <PackageReference Include="dbup-sqlserver" Version="4.5.0" />
   </ItemGroup>
@@ -19,10 +25,6 @@
   <ItemGroup>
     <None Update="OctoHR.DatabaseMigrator.Deploy.sh" CopyToOutputDirectory="PreserveNewest" />
     <None Update="OctoHR.DatabaseMigrator.Deploy.ps1" CopyToOutputDirectory="PreserveNewest" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="scripts\" />
   </ItemGroup>
 
 </Project>

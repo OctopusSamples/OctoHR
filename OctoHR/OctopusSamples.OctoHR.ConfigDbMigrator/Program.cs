@@ -53,7 +53,7 @@ namespace OctopusSamples.OctoHR.ConfigDBMigrator
 
             if (args.Any(a => a.StartsWith("--PreviewReportPath", StringComparison.InvariantCultureIgnoreCase)))
             {
-                var report = args.FirstOrDefault(x => x.StartsWith("--PreviewReportPath", StringComparison.OrdinalIgnoreCase));
+                var report = args.FirstOrDefault(x => x.StartsWith("--PreviewReportPath", StringComparison.InvariantCultureIgnoreCase));
                 report = report.Substring(report.IndexOf("=") + 1).Replace(@"""", string.Empty);
 
                 var fullReportPath = Path.Combine(report, "UpgradeReport.html");
@@ -66,7 +66,6 @@ namespace OctopusSamples.OctoHR.ConfigDBMigrator
             {
                 var result = upgrader.PerformUpgrade();
 
-                // Display the result
                 if (result.Successful)
                 {
                     Console.ForegroundColor = ConsoleColor.Green;
