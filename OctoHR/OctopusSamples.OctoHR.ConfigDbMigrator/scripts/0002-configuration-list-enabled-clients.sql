@@ -22,10 +22,8 @@ BEGIN
 
 	SET NOCOUNT ON;
 
-    SELECT [Name], [Description], [ImageUrl], [ClientConnection]
+    SELECT [Name], [Slug], [Description], [ImageUrl], [ClientDatabase]
 	FROM [dbo].[ClientConfiguration]
 	WHERE [Enabled] = 1
 END
 GO
-
-

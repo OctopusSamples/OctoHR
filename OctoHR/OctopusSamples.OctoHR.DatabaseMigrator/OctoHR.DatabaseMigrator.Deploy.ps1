@@ -1,2 +1,2 @@
 ﻿$connectionString = $OctopusParameters["ConnectionStrings:ConfigurationDatabase"]
-.\OctopusSamples.OctoHR.DatabaseMigrator.exe --ConnectionString="$connectionString"
+.\OctopusSamples.OctoHR.DatabaseMigrator.exe --ConfigConnectionString="$connectionString"

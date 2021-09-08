@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <None Remove="scripts\0002-configuration-list-enabled-clients.sql" />
+    <None Remove="scripts\0010-configuration-add-client-octopetshop.sql" />
   </ItemGroup>
 
   <ItemGroup>
