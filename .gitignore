@@ -253,3 +253,4 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/OctoHR/OctopusSamples.OctoHR.PublicWebApp/appsettings.Development.json

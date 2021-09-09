@@ -24,10 +24,10 @@ BEGIN
 	SET NOCOUNT ON;
 
     IF EXISTS (
-        SELECT * FROM [dbo].[UserAccountRecords] WHERE [Username] = @Username
+        SELECT * FROM [dbo].[UserAccountRecords] WHERE [Username] = @Username AND [Enabled]=1
     )
     BEGIN
-        SELECT [Name], [IsAdmin] FROM [dbo].[UserAccountRecords] WHERE [Username] = @Username
+        SELECT [Name], [IsAdmin] FROM [dbo].[UserAccountRecords] WHERE [Username] = @Username AND [Enabled]=1
     END
     
 END

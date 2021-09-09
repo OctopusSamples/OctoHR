@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusSamples.OctoHR.Datab
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusSamples.OctoHR.ConfigDBMigrator", "OctopusSamples.OctoHR.ConfigDbMigrator\OctopusSamples.OctoHR.ConfigDBMigrator.csproj", "{270CE88B-1335-407B-BA0C-C6C2DA35444F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusSamples.OctoHR.PublicWebApp", "OctopusSamples.OctoHR.PublicWebApp\OctopusSamples.OctoHR.PublicWebApp.csproj", "{7DF8E74B-D4B5-47F9-9EC4-E37A087F17A8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{270CE88B-1335-407B-BA0C-C6C2DA35444F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{270CE88B-1335-407B-BA0C-C6C2DA35444F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{270CE88B-1335-407B-BA0C-C6C2DA35444F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DF8E74B-D4B5-47F9-9EC4-E37A087F17A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DF8E74B-D4B5-47F9-9EC4-E37A087F17A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DF8E74B-D4B5-47F9-9EC4-E37A087F17A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DF8E74B-D4B5-47F9-9EC4-E37A087F17A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -12,12 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="scripts\0000-create-logon-table.sql" />
-    <None Remove="scripts\0002-check-user.sql" />
-    <None Remove="scripts\0003-list-employees.sql" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="dbup-core" Version="4.5.0" />
     <PackageReference Include="dbup-sqlserver" Version="4.5.0" />
   </ItemGroup>

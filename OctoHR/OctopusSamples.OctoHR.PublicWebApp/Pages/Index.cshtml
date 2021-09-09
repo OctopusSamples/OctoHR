@@ -1,0 +1,20 @@
+﻿@page
+@model IndexModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+@{ ViewData["Title"] = "Home Page"; }
+
+@if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+{
+<div class="row">
+    <div class="col-md-12">
+        <h1>Hello @HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value!</h1>
+        <p>Username: @HttpContextAccessor.HttpContext.User.Identity.Name</p>
+    </div>
+</div> }
+            else
+            {
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>To access the Octo Human Resources (HR) portal, please <a asp-page="/Account/Login">Sign in</a>.</p>
+</div>
+}
