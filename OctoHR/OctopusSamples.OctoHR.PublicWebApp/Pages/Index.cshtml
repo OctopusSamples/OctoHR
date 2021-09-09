@@ -7,8 +7,9 @@
 {
 <div class="row">
     <div class="col-md-12">
-        <h1>Hello @HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value!</h1>
-        <p>Username: @HttpContextAccessor.HttpContext.User.Identity.Name</p>
+        <h3>Hello @HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value!</h3>
+        <p><b>Username:</b> @HttpContextAccessor.HttpContext.User.Identity.Name</p>
+        <p><b>>Client:</b> c.Type == "ClientCode")?.Value</p>
     </div>
 </div> }
             else

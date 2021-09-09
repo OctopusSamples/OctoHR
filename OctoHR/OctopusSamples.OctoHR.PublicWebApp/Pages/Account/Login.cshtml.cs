@@ -76,6 +76,7 @@ namespace OctopusSamples.OctoHR.PublicWebApp.Pages.Account
                 {
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim("FullName", user.FullName),
+                    new Claim("ClientCode", user.ClientCode),
                     new Claim(ClaimTypes.Role, user.IsAdministrator ? "Administrator" : "User"),
                 };
 
