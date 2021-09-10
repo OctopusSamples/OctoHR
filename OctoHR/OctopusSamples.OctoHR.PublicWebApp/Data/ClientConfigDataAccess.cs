@@ -1,9 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.SqlClient;
-using System.Threading.Tasks;
 using System.Data;
 
 namespace OctopusSamples.OctoHR.PublicWebApp.Data
@@ -11,6 +9,7 @@ namespace OctopusSamples.OctoHR.PublicWebApp.Data
     public interface IClientConfigDataAccess
     {
         ApplicationUser CheckClientUser(string clientCode, string username, string password);
+        List<Employee> GetEmployees(string clientCode);
     }
 
     public class DatabaseOptions
@@ -21,8 +20,12 @@ namespace OctopusSamples.OctoHR.PublicWebApp.Data
     public class ClientConfigDataAccess : IClientConfigDataAccess
     {
         private readonly DatabaseOptions _databaseOptions;
+        // Config DB Queries
         public const string ListClients = "[dbo].[List_Enabled_Clients]";
+
+        // CustDB Queries
         public const string CheckUser = "[dbo].[CheckUser]";
+        public const string ListEmployees = "[dbo].[List_Employees]";
 
         public ClientConfigDataAccess(IOptions<DatabaseOptions> databaseOptions)
         {
@@ -64,7 +67,6 @@ namespace OctopusSamples.OctoHR.PublicWebApp.Data
                         }
                     }
                 }
-
             }
             return user;
         }
@@ -99,6 +101,46 @@ namespace OctopusSamples.OctoHR.PublicWebApp.Data
                 }
             }
             return clients;
+        }
+
+        public List<Employee> GetEmployees(string clientCode)
+        {
+            List<Employee> employees = null;
+            var clients = GetClients();
+            var registeredClient = clients.FirstOrDefault(c => c.Slug == clientCode);
+
+            if (registeredClient != null)
+            {
+                var clientConnection = new SqlConnectionStringBuilder(_databaseOptions.ConnectionString);
+                clientConnection.InitialCatalog = registeredClient.ClientDatabase;
+
+                using (var connection = new SqlConnection(clientConnection.ConnectionString))
+                {
+                    connection.Open();
+
+                    using (SqlCommand command = new SqlCommand(ListEmployees, connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            employees = new List<Employee>();
+                            while (reader.Read())
+                            {
+                                var employee = new Employee
+                                {
+                                    Name = reader.GetString(nameof(Employee.Name)),
+                                    Position = reader.GetString(nameof(Employee.Position)),
+                                    Salary = reader.GetDecimal(nameof(Employee.Salary)),
+                                    Manager = reader.GetString(nameof(Employee.Manager)),
+                                    CurrentStaff = reader.GetBoolean(nameof(Employee.CurrentStaff))
+                                };
+                                employees.Add(employee);
+                            }
+                        }
+                    }
+                }
+            }
+            return employees;
         }
     }
 }

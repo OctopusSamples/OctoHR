@@ -1,3 +1,4 @@
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,6 +23,11 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        @if (HttpContextAccessor.HttpContext.User.Identity.IsAuthenticated)
+                        {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-controller="Employees" asp-action="List">Employees</a>
+            </li>}
                     </ul>
                     @await Html.PartialAsync("_LoginPartial")
                 </div>

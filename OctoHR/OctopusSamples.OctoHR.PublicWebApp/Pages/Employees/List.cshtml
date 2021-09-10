@@ -1,0 +1,61 @@
+﻿@page
+@model OctopusSamples.OctoHR.PublicWebApp.Pages.Employees.ListModel
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor;
+
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-info">Employee List</h2>
+    </div>
+</div>
+
+<div class="border bg-white">
+    <br />
+    <div>
+        <table class="table table-striped border">
+            <tr class="table-secondary">
+                <th>
+                    @Html.DisplayNameFor(m => m.Employees[0].Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Employees[0].Position)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Employees[0].Salary)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Employees[0].Manager)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(m => m.Employees[0].CurrentStaff)
+                </th>
+            </tr>
+            @foreach (var item in Model.Employees)
+            {
+        <tr>
+            <td>
+                @Html.DisplayFor(m => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Position)
+            </td>
+            <td>
+                @if (HttpContextAccessor.HttpContext.User.IsInRole("Administrator"))
+                {
+                    @Html.DisplayFor(m => item.Salary)
+                }else
+                {
+                <span>*******</span>
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.Manager)
+            </td>
+            <td>
+                @Html.DisplayFor(m => item.CurrentStaff)
+            </td>
+        </tr>
+
+            }
+        </table>
+    </div>
+</div>  

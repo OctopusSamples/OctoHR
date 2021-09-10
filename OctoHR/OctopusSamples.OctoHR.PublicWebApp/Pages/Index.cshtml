@@ -9,11 +9,15 @@
     <div class="col-md-12">
         <h3>Hello @HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "FullName")?.Value!</h3>
         <p><b>Username:</b> @HttpContextAccessor.HttpContext.User.Identity.Name</p>
-        <p><b>>Client:</b> c.Type == "ClientCode")?.Value</p>
+        <p><b>Client:</b> @HttpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "ClientCode")?.Value</p>
     </div>
-</div> }
-            else
-            {
+</div> 
+<div class="text-center">
+    <p>To view your employees, click <a asp-page="/Employees/List">here</a>.</p>
+</div>
+}
+else
+{
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>To access the Octo Human Resources (HR) portal, please <a asp-page="/Account/Login">Sign in</a>.</p>

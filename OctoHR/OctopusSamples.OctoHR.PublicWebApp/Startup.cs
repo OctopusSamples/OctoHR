@@ -28,8 +28,9 @@ namespace OctopusSamples.OctoHR.PublicWebApp
 
             services.Configure<DatabaseOptions>(Configuration.GetSection("Database:Config"));
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IUserAuthenticationService, UserAuthenticationService>();
             services.AddSingleton<IClientConfigDataAccess, ClientConfigDataAccess>();
+            services.AddSingleton<IUserAuthenticationService, UserAuthenticationService>();
+            services.AddSingleton<IEmployeeService, EmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +42,7 @@ namespace OctopusSamples.OctoHR.PublicWebApp
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Error");
             }
             app.UseStaticFiles();
 
