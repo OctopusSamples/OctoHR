@@ -51,10 +51,10 @@ jobs:
         octo pack --id="OctoHR.PublicWebApp" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.PublicWebApp" --outFolder="$GITHUB_WORKSPACE/artifacts"
     - name: Push ConfigDbMigrator
       run: |
-        octo push --package="$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.ConfigDbMigrator.$PACKAGE_VERSION.zip" --server="${{ secrets.OCTOPUSSERVERURL }}" --apiKey="${{ secrets.OCTOPUSSERVERAPIKEY }}" --space="${{ secrets.OCTOPUSSERVER_SPACE }}"
+        octo push --package="$GITHUB_WORKSPACE/artifacts/OctoHR.ConfigDbMigrator.$PACKAGE_VERSION.zip" --server="${{ secrets.OCTOPUSSERVERURL }}" --apiKey="${{ secrets.OCTOPUSSERVERAPIKEY }}" --space="${{ secrets.OCTOPUSSERVER_SPACE }}"
     - name: Push DatabaseMigrator
       run: |
-        octo push --package="$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.DatabaseMigrator.$PACKAGE_VERSION.zip" --server="${{ secrets.OCTOPUSSERVERURL }}" --apiKey="${{ secrets.OCTOPUSSERVERAPIKEY }}" --space="${{ secrets.OCTOPUSSERVER_SPACE }}"
+        octo push --package="$GITHUB_WORKSPACE/artifacts/OctoHR.DatabaseMigrator.$PACKAGE_VERSION.zip" --server="${{ secrets.OCTOPUSSERVERURL }}" --apiKey="${{ secrets.OCTOPUSSERVERAPIKEY }}" --space="${{ secrets.OCTOPUSSERVER_SPACE }}"
     - name: Push OctoHR.PublicWebApp
       run: |
-        octo push --package="$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.PublicWebApp.$PACKAGE_VERSION.zip" --server="${{ secrets.OCTOPUSSERVERURL }}" --apiKey="${{ secrets.OCTOPUSSERVERAPIKEY }}" --space="${{ secrets.OCTOPUSSERVER_SPACE }}"
+        octo push --package="$GITHUB_WORKSPACE/artifacts/OctoHR.PublicWebApp.$PACKAGE_VERSION.zip" --server="${{ secrets.OCTOPUSSERVERURL }}" --apiKey="${{ secrets.OCTOPUSSERVERAPIKEY }}" --space="${{ secrets.OCTOPUSSERVER_SPACE }}"
