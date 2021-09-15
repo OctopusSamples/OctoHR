@@ -23,6 +23,7 @@ jobs:
       working-directory: ./OctoHR
       run: dotnet restore
     - name: Build
+      working-directory: ./OctoHR
       run: dotnet build --no-restore
     - name: Install Octopus CLI
       uses: OctopusDeploy/install-octopus-cli-action@v1.1.6
