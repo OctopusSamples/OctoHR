@@ -35,4 +35,4 @@ jobs:
         mkdir "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.DatabaseMigrator"
         mkdir "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.PublicWebApp"
     - name: Publish ConfigDbMigrator
-      run: dotnet publish OctopusSamples.OctoHR.ConfigDbMigrator/OctopusSamples.OctoHR.ConfigDbMigrator.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/OctopusSamples.OctoHR.ConfigDbMigrator"
+      run: dotnet publish OctopusSamples.OctoHR.ConfigDbMigrator/OctopusSamples.OctoHR.ConfigDBMigrator.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.ConfigDbMigrator"
