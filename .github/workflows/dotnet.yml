@@ -10,6 +10,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./OctoHR
 
     steps:
     - uses: actions/checkout@v2
@@ -20,10 +23,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      working-directory: ./OctoHR
       run: dotnet restore
     - name: Build
-      working-directory: ./OctoHR
       run: dotnet build --no-restore
     - name: Install Octopus CLI
       uses: OctopusDeploy/install-octopus-cli-action@v1.1.6
