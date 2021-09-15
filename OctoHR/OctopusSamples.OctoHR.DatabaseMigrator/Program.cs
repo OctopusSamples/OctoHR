@@ -16,7 +16,6 @@ namespace OctopusSamples.OctoHR.DatabaseMigrator
 
         static int Main(string[] args)
         {
-            var retryCount = 0;
             var configConnectionString = args.FirstOrDefault(x => x.StartsWith("--ConfigConnectionString", StringComparison.InvariantCultureIgnoreCase));
 
             if (string.IsNullOrWhiteSpace(configConnectionString))
@@ -33,29 +32,7 @@ namespace OctopusSamples.OctoHR.DatabaseMigrator
                     Console.WriteLine("Working on database for client: {0}", client.Name);
                     var clientConnection = new SqlConnectionStringBuilder(configConnectionString);
                     clientConnection.InitialCatalog = client.ClientDatabase;
-                    while (true)
-                    {
-                        try
-                        {
-                            Console.WriteLine("Ensuring database exists for client: {0}", client.Name);
-                            EnsureDatabase.For.SqlDatabase(clientConnection.ConnectionString);
-                            break;
-                        }
-                        catch (SqlException)
-                        {
-                            if (retryCount < 3)
-                            {
-                                Console.WriteLine("Connection error occured for client: {0}, waiting 3 seconds then trying again.", client.Name);
-                                Thread.Sleep(3000);
-                                retryCount += 1;
-                            }
-                            else
-                            {
-                                throw;
-                            }
-                        }
-                    }
-
+                   
                     // Migrate Tenant DB
                     Console.WriteLine("Migrating database for client: {0}", client.Name);
                     var upgrader = DeployChanges.To
