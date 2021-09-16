@@ -1,40 +1,90 @@
-step "Hello world (using PowerShell)" {
+step "Approve Production Deployment" {
+    condition = "Variable"
+    properties = {
+        Octopus.Step.ConditionVariableExpression = "#{unless Octopus.Deployment.Trigger.Name}True#{/unless}"
+    }
+
+    action {
+        action_type = "Octopus.Manual"
+        environments = ["Production"]
+        notes = "Only runs in **Production**"
+        properties = {
+            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
+            Octopus.Action.Manual.Instructions = "Please confirm OctoHR is ok to deploy to Production"
+            Octopus.Action.Manual.ResponsibleTeamIds = "Octopus Managers"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "Deploy OctoHR Config DB Migrator" {
 
     action {
         action_type = "Octopus.Script"
-        is_required = true
         properties = {
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "Octopus Server (built-in)"
+            Octopus.Action.Package.PackageId = "OctoHR.ConfigDbMigrator"
             Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Script.ScriptBody = <<-EOT
-                Write-Host 'Hello world, using PowerShell'
-                
-                #TODO: Experiment with steps of your own :)
-                
-                Write-Host '[Learn more about the types of steps available in Octopus](https://g.octopushq.com/OnboardingAddStepsLearnMore)'
-            EOT
-            Octopus.Action.Script.ScriptSource = "Inline"
-            Octopus.Action.Script.Syntax = "PowerShell"
+            Octopus.Action.Script.ScriptFileName = "OctoHR.ConfigDBMigrator.Deploy.ps1"
+            Octopus.Action.Script.ScriptParameters = "--ConnectionString=\"#{Database:Config:ConnectionString}\""
+            Octopus.Action.Script.ScriptSource = "Package"
+        }
+        worker_pool = "Hosted Windows"
+
+        packages {
+            acquisition_location = "Server"
+            feed = "Octopus Server (built-in)"
+            package_id = "OctoHR.ConfigDbMigrator"
+            properties = {
+                SelectionMode = "immediate"
+            }
         }
     }
 }
 
-step "Hello world (using Bash)" {
-    start_trigger = "StartWithPrevious"
+step "Confirm Config DB migration" {
+    condition = "Variable"
+    properties = {
+        Octopus.Step.ConditionVariableExpression = "#{unless Octopus.Deployment.Trigger.Name}True#{/unless}"
+    }
 
     action {
-        action_type = "Octopus.Script"
-        is_required = true
+        action_type = "Octopus.Manual"
+        notes = ""
         properties = {
-            Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Script.ScriptBody = <<-EOT
-                echo 'Hello world, using Bash'
-                
-                #TODO: Experiment with steps of your own :)
-                
-                echo '[Learn more about the types of steps available in Octopus](https://g.octopushq.com/OnboardingAddStepsLearnMore)'
-            EOT
-            Octopus.Action.Script.ScriptSource = "Inline"
-            Octopus.Action.Script.Syntax = "Bash"
+            Octopus.Action.Manual.BlockConcurrentDeployments = "False"
+            Octopus.Action.Manual.Instructions = "Please confirm OctoHR Config DB is migrated as expected."
+            Octopus.Action.Manual.ResponsibleTeamIds = "Octopus Managers"
+        }
+        worker_pool_variable = ""
+    }
+}
+
+step "Deploy OctoHR PublicWebApp" {
+    properties = {
+        Octopus.Action.TargetRoles = "OctoHR-Web"
+    }
+
+    action {
+        action_type = "Octopus.AzureAppService"
+        properties = {
+            Octopus.Action.Azure.DeploymentType = "Package"
+            Octopus.Action.Package.DownloadOnTentacle = "False"
+            Octopus.Action.Package.FeedId = "Octopus Server (built-in)"
+            Octopus.Action.Package.JsonConfigurationVariablesTargets = "appsettings.json"
+            Octopus.Action.Package.PackageId = "OctoHR.PublicWebApp"
+            OctopusUseBundledTooling = "False"
+        }
+        worker_pool_variable = ""
+
+        packages {
+            acquisition_location = "Server"
+            feed = "Octopus Server (built-in)"
+            package_id = "OctoHR.PublicWebApp"
+            properties = {
+                SelectionMode = "immediate"
+            }
         }
     }
 }
