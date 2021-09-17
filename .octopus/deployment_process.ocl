@@ -136,3 +136,20 @@ step "Deploy OctoHR PublicWebApp" {
         }
     }
 }
+
+step "Azure Web App - Disable app_offline" {
+
+    action {
+        properties = {
+            AzWebApp.DisableAppOffline.AzWebAppName = "#{Project.OctoHR.WebApp.Name}"
+            AzWebApp.DisableAppOffline.Deployment.KuduRestApiUrl = "https://#{AzWebApp.DisableAppOffline.AzWebAppName}.scm.azurewebsites.net/api/vfs"
+            AzWebApp.DisableAppOffline.Deployment.Password = "#{Octopus.Action[Azure Web App - Get Deployment User].Output.userPWD}"
+            AzWebApp.DisableAppOffline.Deployment.Username = "#{Octopus.Action[Azure Web App - Get Deployment User].Output.userName}"
+            AzWebApp.DisableAppOffline.Filename = "app_offline.htm"
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Template.Id = "ActionTemplates-1726"
+            Octopus.Action.Template.Version = "1"
+        }
+        worker_pool_variable = "Project.Worker.Pool"
+    }
+}
