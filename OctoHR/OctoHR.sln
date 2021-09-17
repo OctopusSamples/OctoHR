@@ -9,6 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusSamples.OctoHR.Confi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OctopusSamples.OctoHR.PublicWebApp", "OctopusSamples.OctoHR.PublicWebApp\OctopusSamples.OctoHR.PublicWebApp.csproj", "{7DF8E74B-D4B5-47F9-9EC4-E37A087F17A8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "App_Offline", "App_Offline", "{BF22ECBA-49A9-4CE5-842E-03DB73004F96}"
+	ProjectSection(SolutionItems) = preProject
+		App_Offline\app_offline.htm = App_Offline\app_offline.htm
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
