@@ -27,7 +27,6 @@ step "Deploy OctoHR Config DB Migrator" {
             Octopus.Action.Package.PackageId = "OctoHR.ConfigDbMigrator"
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Script.ScriptFileName = "OctoHR.ConfigDBMigrator.Deploy.ps1"
-            Octopus.Action.Script.ScriptParameters = "--ConnectionString=\"#{Database:Config:ConnectionString}\""
             Octopus.Action.Script.ScriptSource = "Package"
         }
         worker_pool = "Hosted Windows"
@@ -51,6 +50,7 @@ step "Confirm Config DB migration" {
 
     action {
         action_type = "Octopus.Manual"
+        is_disabled = true
         notes = ""
         properties = {
             Octopus.Action.Manual.BlockConcurrentDeployments = "False"
