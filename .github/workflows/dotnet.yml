@@ -35,9 +35,9 @@ jobs:
         mkdir "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.DatabaseMigrator"
         mkdir "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.PublicWebApp"
     - name: Publish ConfigDbMigrator
-      run: dotnet publish OctopusSamples.OctoHR.ConfigDbMigrator/OctopusSamples.OctoHR.ConfigDBMigrator.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.ConfigDbMigrator"
+      run: dotnet publish OctopusSamples.OctoHR.ConfigDbMigrator/OctopusSamples.OctoHR.ConfigDBMigrator.csproj -r win-x64 --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.ConfigDbMigrator"
     - name: Publish DatabaseMigrator
-      run: dotnet publish OctopusSamples.OctoHR.DatabaseMigrator/OctopusSamples.OctoHR.DatabaseMigrator.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.DatabaseMigrator"
+      run: dotnet publish OctopusSamples.OctoHR.DatabaseMigrator/OctopusSamples.OctoHR.DatabaseMigrator.csproj -r win-x64 --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.DatabaseMigrator"
     - name: Publish PublicWebApp
       run: dotnet publish OctopusSamples.OctoHR.PublicWebApp/OctopusSamples.OctoHR.PublicWebApp.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.PublicWebApp.csproj"
     - name: Package ConfigDbMigrator
