@@ -39,7 +39,7 @@ jobs:
     - name: Publish DatabaseMigrator
       run: dotnet publish OctopusSamples.OctoHR.DatabaseMigrator/OctopusSamples.OctoHR.DatabaseMigrator.csproj -r win-x64 --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.DatabaseMigrator"
     - name: Publish PublicWebApp
-      run: dotnet publish OctopusSamples.OctoHR.PublicWebApp/OctopusSamples.OctoHR.PublicWebApp.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.PublicWebApp.csproj"
+      run: dotnet publish OctopusSamples.OctoHR.PublicWebApp/OctopusSamples.OctoHR.PublicWebApp.csproj --configuration Release --no-restore --output "$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.PublicWebApp"
     - name: Package ConfigDbMigrator
       run: |
         octo pack --id="OctoHR.ConfigDbMigrator" --format="Zip" --version="$PACKAGE_VERSION" --basePath="$GITHUB_WORKSPACE/artifacts/OctopusSamples.OctoHR.ConfigDbMigrator" --outFolder="$GITHUB_WORKSPACE/artifacts"
