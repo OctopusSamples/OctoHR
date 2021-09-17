@@ -51,7 +51,7 @@ step "Azure Web App - Enable app_offline" {
             AzWebApp.AppOffline.UploadOrRemoveAppOfflineFile = "Enable"
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Template.Id = "ActionTemplates-1721"
-            Octopus.Action.Template.Version = "12"
+            Octopus.Action.Template.Version = "13"
         }
         worker_pool = "Hosted Windows"
 
