@@ -70,9 +70,13 @@ step "Deploy OctoHR PublicWebApp" {
         action_type = "Octopus.AzureAppService"
         properties = {
             Octopus.Action.Azure.DeploymentType = "Package"
+            Octopus.Action.EnabledFeatures = "Octopus.Features.JsonConfigurationVariables,Octopus.Features.ConfigurationTransforms,Octopus.Features.SubstituteInFiles"
             Octopus.Action.Package.DownloadOnTentacle = "False"
             Octopus.Action.Package.FeedId = "Octopus Server (built-in)"
-            Octopus.Action.Package.JsonConfigurationVariablesTargets = "appsettings.json"
+            Octopus.Action.Package.JsonConfigurationVariablesTargets = <<-EOT
+                appsettings.json
+                **\appsettings.json
+            EOT
             Octopus.Action.Package.PackageId = "OctoHR.PublicWebApp"
             OctopusUseBundledTooling = "False"
         }
