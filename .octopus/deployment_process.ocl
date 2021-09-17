@@ -96,7 +96,7 @@ step "Deploy OctoHR Config DB Migrator" {
 step "Confirm Config DB migration" {
     condition = "Variable"
     properties = {
-        Octopus.Step.ConditionVariableExpression = "#{unless Octopus.Deployment.Trigger.Name}True#{/unless}"
+        Octopus.Step.ConditionVariableExpression = "#{unless Octopus.Deployment.Error}#{unless Octopus.Deployment.Trigger.Name}True#{/unless}#{/unless}"
     }
 
     action {
