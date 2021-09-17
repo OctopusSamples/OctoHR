@@ -24,7 +24,7 @@ step "Azure Web App - Get Deployment User" {
             AzWebApp.DeploymentCreds.AzAccount = "#{Azure.Account}"
             AzWebApp.DeploymentCreds.AzResourceGroup = "#{Project.Azure.ResourceGroup.Name}"
             AzWebApp.DeploymentCreds.AzWebAppName = "#{Project.OctoHR.WebApp.Name}"
-            AzWebApp.DeploymentCreds.PublishCredentialType = "FTP"
+            AzWebApp.DeploymentCreds.PublishCredentialType = "MSDeploy"
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Template.Id = "ActionTemplates-1722"
             Octopus.Action.Template.Version = "29"
