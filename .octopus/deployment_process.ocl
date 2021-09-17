@@ -24,10 +24,17 @@ step "Azure Web App - Get Deployment User" {
             AzWebApp.DeploymentCreds.AzAccount = "Azure.Account"
             AzWebApp.DeploymentCreds.AzResourceGroup = "#{Project.Azure.ResourceGroup.Name}"
             AzWebApp.DeploymentCreds.AzWebAppName = "#{Project.OctoHR.WebApp.Name}"
+            Octopus.Action.RunOnServer = "true"
             Octopus.Action.Template.Id = "ActionTemplates-1722"
             Octopus.Action.Template.Version = "24"
+            OctopusUseBundledTooling = "False"
         }
-        worker_pool_variable = ""
+        worker_pool_variable = "Project.Worker.Pool"
+
+        container {
+            feed = "Docker Hub"
+            image = "octopuslabs/azure-workertools:2.28.0"
+        }
     }
 }
 
