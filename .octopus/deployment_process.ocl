@@ -21,19 +21,43 @@ step "Azure Web App - Get Deployment User" {
 
     action {
         properties = {
-            AzWebApp.DeploymentCreds.AzAccount = "Azure.Account"
+            AzWebApp.DeploymentCreds.AzAccount = "#{Azure.Account}"
             AzWebApp.DeploymentCreds.AzResourceGroup = "#{Project.Azure.ResourceGroup.Name}"
             AzWebApp.DeploymentCreds.AzWebAppName = "#{Project.OctoHR.WebApp.Name}"
-            Octopus.Action.RunOnServer = "true"
+            AzWebApp.DeploymentCreds.PublishCredentialType = "FTP"
             Octopus.Action.Template.Id = "ActionTemplates-1722"
-            Octopus.Action.Template.Version = "24"
-            OctopusUseBundledTooling = "False"
+            Octopus.Action.Template.Version = "26"
         }
-        worker_pool_variable = "Project.Worker.Pool"
+        worker_pool_variable = ""
+    }
+}
 
-        container {
-            feed = "Docker Hub"
-            image = "octopuslabs/azure-workertools:2.28.0"
+step "Azure Web App - Enable app_offline" {
+
+    action {
+        properties = {
+            AzWebApp.AppOffline.AzWebAppName = "#{Project.OctoHR.WebApp.Name}"
+            AzWebApp.AppOffline.Deployment.KuduRestApiUrl = "https://#{AzWebApp.AppOffline.AzWebAppName}.scm.azurewebsites.net/api/vfs"
+            AzWebApp.AppOffline.Deployment.Password = "#{Octopus.Action[Azure Web App - Get Deployment User].Output.userPWD}"
+            AzWebApp.AppOffline.Deployment.Username = "#{Octopus.Action[Azure Web App - Get Deployment User].Output.userName}"
+            AzWebApp.AppOffline.Filename = "app_offline.htm"
+            AzWebApp.AppOffline.SourcePackage = "{\"PackageId\":\"OctoHR.PublicWebApp.AppOffline\",\"FeedId\":\"Octopus Server (built-in)\"}"
+            AzWebApp.AppOffline.UploadOrRemoveAppOfflineFile = "Enable"
+            Octopus.Action.RunOnServer = "true"
+            Octopus.Action.Template.Id = "ActionTemplates-1721"
+            Octopus.Action.Template.Version = "11"
+        }
+        worker_pool = "Hosted Windows"
+
+        packages "AzWebApp.AppOffline.SourcePackage" {
+            acquisition_location = "Server"
+            feed = "Octopus Server (built-in)"
+            package_id = "OctoHR.PublicWebApp.AppOffline"
+            properties = {
+                Extract = "True"
+                PackageParameterName = "AzWebApp.AppOffline.SourcePackage"
+                SelectionMode = "deferred"
+            }
         }
     }
 }
@@ -71,7 +95,6 @@ step "Confirm Config DB migration" {
 
     action {
         action_type = "Octopus.Manual"
-        is_disabled = true
         notes = ""
         properties = {
             Octopus.Action.Manual.BlockConcurrentDeployments = "False"
@@ -106,36 +129,6 @@ step "Deploy OctoHR PublicWebApp" {
             package_id = "OctoHR.PublicWebApp"
             properties = {
                 SelectionMode = "immediate"
-            }
-        }
-    }
-}
-
-step "Azure Web App - Enable or Disable app_offline" {
-
-    action {
-        properties = {
-            AzWebApp.AppOffline.AzWebAppName = "#{Project.OctoHR.WebApp.Name}"
-            AzWebApp.AppOffline.Deployment.KuduRestApiUrl = "https://#{AzWebApp.AppOffline.AzWebAppName}.scm.azurewebsites.net/api/vfs"
-            AzWebApp.AppOffline.Deployment.Password = "#{Temp.DeployUser.Password}"
-            AzWebApp.AppOffline.Deployment.Username = "$#{AzWebApp.AppOffline.WebAppName}"
-            AzWebApp.AppOffline.Filename = "app_offline.htm"
-            AzWebApp.AppOffline.SourcePackage = "{\"PackageId\":\"OctoHR.PublicWebApp.AppOffline\",\"FeedId\":\"Octopus Server (built-in)\"}"
-            AzWebApp.AppOffline.UploadOrRemoveAppOfflineFile = "Enable"
-            Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Template.Id = "ActionTemplates-1721"
-            Octopus.Action.Template.Version = "11"
-        }
-        worker_pool = "Hosted Windows"
-
-        packages "AzWebApp.AppOffline.SourcePackage" {
-            acquisition_location = "Server"
-            feed = "Octopus Server (built-in)"
-            package_id = "OctoHR.PublicWebApp.AppOffline"
-            properties = {
-                Extract = "True"
-                PackageParameterName = "AzWebApp.AppOffline.SourcePackage"
-                SelectionMode = "deferred"
             }
         }
     }
