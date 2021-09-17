@@ -27,7 +27,7 @@ step "Azure Web App - Get Deployment User" {
             AzWebApp.DeploymentCreds.PublishCredentialType = "FTP"
             Octopus.Action.RunOnServer = "true"
             Octopus.Action.Template.Id = "ActionTemplates-1722"
-            Octopus.Action.Template.Version = "26"
+            Octopus.Action.Template.Version = "29"
         }
         worker_pool_variable = "Project.Worker.Pool"
 
