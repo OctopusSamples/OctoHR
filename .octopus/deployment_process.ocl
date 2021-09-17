@@ -11,7 +11,6 @@ step "Approve Production Deployment" {
         properties = {
             Octopus.Action.Manual.BlockConcurrentDeployments = "False"
             Octopus.Action.Manual.Instructions = "Please confirm OctoHR is ok to deploy to Production"
-            Octopus.Action.Manual.ResponsibleTeamIds = "Octopus Managers"
         }
         worker_pool_variable = ""
     }
@@ -105,7 +104,6 @@ step "Confirm Config DB migration" {
         properties = {
             Octopus.Action.Manual.BlockConcurrentDeployments = "False"
             Octopus.Action.Manual.Instructions = "Please confirm OctoHR Config DB is migrated as expected."
-            Octopus.Action.Manual.ResponsibleTeamIds = "Octopus Managers"
         }
         worker_pool_variable = ""
     }
