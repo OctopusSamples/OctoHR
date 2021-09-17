@@ -17,6 +17,17 @@ step "Approve Production Deployment" {
     }
 }
 
+step "Azure Web App - Get Deployment User" {
+
+    action {
+        properties = {
+            Octopus.Action.Template.Id = "ActionTemplates-1722"
+            Octopus.Action.Template.Version = "24"
+        }
+        worker_pool_variable = ""
+    }
+}
+
 step "Deploy OctoHR Config DB Migrator" {
 
     action {
