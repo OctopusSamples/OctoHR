@@ -25,7 +25,7 @@ step "Azure Web App - Get Deployment User" {
             AzWebApp.DeploymentCreds.AzWebAppName = "#{Project.OctoHR.WebApp.Name}"
             AzWebApp.DeploymentCreds.PublishCredentialType = "MSDeploy"
             Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Template.Id = "ActionTemplates-1724"
+            Octopus.Action.Template.Id = "ActionTemplates-41"
             Octopus.Action.Template.Version = "1"
         }
         worker_pool_variable = "Project.Worker.Pool"
@@ -48,7 +48,7 @@ step "Azure Web App - Enable app_offline" {
             AzWebApp.EnableAppOffline.Filename = "app_offline.htm"
             AzWebApp.EnableAppOffline.SourcePackage = "{\"PackageId\":\"OctoHR.PublicWebApp.AppOffline\",\"FeedId\":\"Octopus Server (built-in)\"}"
             Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Template.Id = "ActionTemplates-1725"
+            Octopus.Action.Template.Id = "ActionTemplates-42"
             Octopus.Action.Template.Version = "1"
         }
         worker_pool_variable = "Project.Worker.Pool"
@@ -147,7 +147,7 @@ step "Azure Web App - Disable app_offline" {
             AzWebApp.DisableAppOffline.Deployment.Username = "#{Octopus.Action[Azure Web App - Get Deployment User].Output.userName}"
             AzWebApp.DisableAppOffline.Filename = "app_offline.htm"
             Octopus.Action.RunOnServer = "true"
-            Octopus.Action.Template.Id = "ActionTemplates-1726"
+            Octopus.Action.Template.Id = "ActionTemplates-43"
             Octopus.Action.Template.Version = "1"
         }
         worker_pool_variable = "Project.Worker.Pool"
