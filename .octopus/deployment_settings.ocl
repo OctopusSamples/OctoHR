@@ -4,6 +4,6 @@ connectivity_policy {
 versioning_strategy {
 
     donor_package {
-        step = "Deploy OctoHR PublicWebApp"
+        step = "deploy-octohr-publicwebapp"
     }
 }

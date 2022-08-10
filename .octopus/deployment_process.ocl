@@ -1,22 +1,25 @@
-step "Approve Production Deployment" {
+step "approve-production-deployment" {
     condition = "Variable"
+    name = "Approve Production Deployment"
     properties = {
         Octopus.Step.ConditionVariableExpression = "#{unless Octopus.Deployment.Trigger.Name}True#{/unless}"
     }
 
     action {
         action_type = "Octopus.Manual"
-        environments = ["Production"]
+        environments = ["production"]
         notes = "Only runs in **Production**."
         properties = {
             Octopus.Action.Manual.BlockConcurrentDeployments = "False"
             Octopus.Action.Manual.Instructions = "Please confirm OctoHR is ok to deploy to Production"
+            Octopus.Action.RunOnServer = "false"
         }
         worker_pool_variable = ""
     }
 }
 
-step "Azure Web App - Get Deployment User" {
+step "azure-web-app-get-deployment-user" {
+    name = "Azure Web App - Get Deployment User"
 
     action {
         properties = {
@@ -24,20 +27,20 @@ step "Azure Web App - Get Deployment User" {
             AzWebApp.DeploymentCreds.AzResourceGroup = "#{Project.Azure.ResourceGroup.Name}"
             AzWebApp.DeploymentCreds.AzWebAppName = "#{Project.OctoHR.WebApp.Name}"
             AzWebApp.DeploymentCreds.PublishCredentialType = "MSDeploy"
-            Octopus.Action.RunOnServer = "true"
             Octopus.Action.Template.Id = "ActionTemplates-1724"
             Octopus.Action.Template.Version = "1"
         }
         worker_pool_variable = "Project.Worker.Pool"
 
         container {
-            feed = "Docker Feed TF"
+            feed = "docker-feed-tf"
             image = "octopuslabs/azure-workertools:2.28.0"
         }
     }
 }
 
-step "Azure Web App - Enable app_offline" {
+step "azure-web-app-enable-app-offline" {
+    name = "Azure Web App - Enable app_offline"
 
     action {
         properties = {
@@ -46,8 +49,7 @@ step "Azure Web App - Enable app_offline" {
             AzWebApp.EnableAppOffline.Deployment.Password = "#{Octopus.Action[Azure Web App - Get Deployment User].Output.userPWD}"
             AzWebApp.EnableAppOffline.Deployment.Username = "#{Octopus.Action[Azure Web App - Get Deployment User].Output.userName}"
             AzWebApp.EnableAppOffline.Filename = "app_offline.htm"
-            AzWebApp.EnableAppOffline.SourcePackage = "{\"PackageId\":\"OctoHR.PublicWebApp.AppOffline\",\"FeedId\":\"Octopus Server (built-in)\"}"
-            Octopus.Action.RunOnServer = "true"
+            AzWebApp.EnableAppOffline.SourcePackage = "{\"PackageId\":\"OctoHR.PublicWebApp.AppOffline\",\"FeedId\":\"octopus-server-built-in\"}"
             Octopus.Action.Template.Id = "ActionTemplates-1725"
             Octopus.Action.Template.Version = "1"
         }
@@ -55,7 +57,7 @@ step "Azure Web App - Enable app_offline" {
 
         packages "AzWebApp.EnableAppOffline.SourcePackage" {
             acquisition_location = "Server"
-            feed = "Octopus Server (built-in)"
+            feed = "octopus-server-built-in"
             package_id = "OctoHR.PublicWebApp.AppOffline"
             properties = {
                 Extract = "True"
@@ -66,22 +68,23 @@ step "Azure Web App - Enable app_offline" {
     }
 }
 
-step "Deploy OctoHR Config DB Migrator" {
+step "deploy-octohr-config-db-migrator" {
+    name = "Deploy OctoHR Config DB Migrator"
 
     action {
         action_type = "Octopus.Script"
         properties = {
             Octopus.Action.Package.DownloadOnTentacle = "False"
-            Octopus.Action.Package.FeedId = "Octopus Server (built-in)"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
             Octopus.Action.Package.PackageId = "OctoHR.ConfigDbMigrator"
             Octopus.Action.Script.ScriptFileName = "OctoHR.ConfigDBMigrator.Deploy.ps1"
             Octopus.Action.Script.ScriptSource = "Package"
         }
-        worker_pool = "Hosted Windows"
+        worker_pool = "hosted-windows"
 
         packages {
             acquisition_location = "Server"
-            feed = "Octopus Server (built-in)"
+            feed = "octopus-server-built-in"
             package_id = "OctoHR.ConfigDbMigrator"
             properties = {
                 SelectionMode = "immediate"
@@ -90,8 +93,9 @@ step "Deploy OctoHR Config DB Migrator" {
     }
 }
 
-step "Confirm Config DB migration" {
+step "confirm-config-db-migration" {
     condition = "Variable"
+    name = "Confirm Config DB migration"
     properties = {
         Octopus.Step.ConditionVariableExpression = "#{unless Octopus.Deployment.Error}#{unless Octopus.Deployment.Trigger.Name}True#{/unless}#{/unless}"
     }
@@ -102,12 +106,14 @@ step "Confirm Config DB migration" {
         properties = {
             Octopus.Action.Manual.BlockConcurrentDeployments = "False"
             Octopus.Action.Manual.Instructions = "Please confirm OctoHR Config DB is migrated as expected."
+            Octopus.Action.RunOnServer = "false"
         }
         worker_pool_variable = ""
     }
 }
 
-step "Deploy OctoHR PublicWebApp" {
+step "deploy-octohr-publicwebapp" {
+    name = "Deploy OctoHR PublicWebApp"
     properties = {
         Octopus.Action.TargetRoles = "OctoHR-Web"
     }
@@ -118,16 +124,17 @@ step "Deploy OctoHR PublicWebApp" {
             Octopus.Action.Azure.DeploymentType = "Package"
             Octopus.Action.EnabledFeatures = "Octopus.Features.JsonConfigurationVariables,Octopus.Features.ConfigurationTransforms,Octopus.Features.SubstituteInFiles"
             Octopus.Action.Package.DownloadOnTentacle = "False"
-            Octopus.Action.Package.FeedId = "Octopus Server (built-in)"
+            Octopus.Action.Package.FeedId = "octopus-server-built-in"
             Octopus.Action.Package.JsonConfigurationVariablesTargets = "**\\appsettings.json"
             Octopus.Action.Package.PackageId = "OctoHR.PublicWebApp"
+            Octopus.Action.RunOnServer = "false"
             OctopusUseBundledTooling = "False"
         }
         worker_pool_variable = ""
 
         packages {
             acquisition_location = "Server"
-            feed = "Octopus Server (built-in)"
+            feed = "octopus-server-built-in"
             package_id = "OctoHR.PublicWebApp"
             properties = {
                 SelectionMode = "immediate"
@@ -136,7 +143,8 @@ step "Deploy OctoHR PublicWebApp" {
     }
 }
 
-step "Azure Web App - Disable app_offline" {
+step "azure-web-app-disable-app-offline" {
+    name = "Azure Web App - Disable app_offline"
 
     action {
         properties = {
@@ -145,7 +153,6 @@ step "Azure Web App - Disable app_offline" {
             AzWebApp.DisableAppOffline.Deployment.Password = "#{Octopus.Action[Azure Web App - Get Deployment User].Output.userPWD}"
             AzWebApp.DisableAppOffline.Deployment.Username = "#{Octopus.Action[Azure Web App - Get Deployment User].Output.userName}"
             AzWebApp.DisableAppOffline.Filename = "app_offline.htm"
-            Octopus.Action.RunOnServer = "true"
             Octopus.Action.Template.Id = "ActionTemplates-1726"
             Octopus.Action.Template.Version = "1"
         }
