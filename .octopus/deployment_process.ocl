@@ -1,6 +1,6 @@
 step "approve-production-deployment" {
     condition = "Variable"
-    name = "Approve Production Deployment"
+    name = "Approve Deployment for production"
     properties = {
         Octopus.Step.ConditionVariableExpression = "#{unless Octopus.Deployment.Trigger.Name}True#{/unless}"
     }
