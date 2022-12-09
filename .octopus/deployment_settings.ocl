@@ -3,7 +3,5 @@ connectivity_policy {
 }
 
 versioning_strategy {
-    donor_package {
-        step = "deploy-octohr-publicwebapp"
-    }
+    template = "#{Octopus.Date.Year}.#{Octopus.Date.Month}.#{Octopus.Date.Day}.i"
 }
