@@ -14,7 +14,6 @@ step "approve-production-deployment" {
             Octopus.Action.Manual.Instructions = "Please confirm OctoHR is ok to deploy to Production"
             Octopus.Action.RunOnServer = "false"
         }
-        worker_pool_variable = ""
     }
 }
 
@@ -34,7 +33,7 @@ step "azure-web-app-get-deployment-user" {
 
         container {
             feed = "docker-feed-tf"
-            image = "octopuslabs/azure-workertools:2.28.0"
+            image = "octopuslabs/azure-workertools"
         }
     }
 }
@@ -108,7 +107,6 @@ step "confirm-config-db-migration" {
             Octopus.Action.Manual.Instructions = "Please confirm OctoHR Config DB is migrated as expected."
             Octopus.Action.RunOnServer = "false"
         }
-        worker_pool_variable = ""
     }
 }
 
